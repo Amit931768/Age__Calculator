@@ -6,6 +6,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
+:root{
+  --bg:#0f1224;
+  --box:#1b1f3b;
+  --pink:#ff4d9d;
+}
+
 *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif}
 
 body{
@@ -25,7 +31,7 @@ body{
 
 h2{text-align:center;margin-bottom:12px}
 
-/* Dark mode toggle checkbox centered inline */
+/* Dark mode toggle */
 .dark-toggle{
   display:flex;
   justify-content:center;
@@ -33,28 +39,27 @@ h2{text-align:center;margin-bottom:12px}
   margin-bottom:15px;
   font-weight:bold;
 }
+.dark-toggle span{margin: 0 5px}
+.dark-toggle input{transform: scale(1.2);cursor:pointer}
 
-.dark-toggle span{
-  margin: 0 5px;
-}
-
-.dark-toggle input{
-  transform: scale(1.2);
-  cursor:pointer;
-}
-
+/* Input card */
 .input-box{
-  background:#1b1f3b;
+  background:var(--box);
   padding:15px;
   border-radius:12px;
   text-align:center;
-  transition: all .3s;
+  cursor:pointer;
+  transition: all .3s, box-shadow .4s;
+  box-shadow:0 4px 10px rgba(0,0,0,0.5);
 }
-
 .input-box:hover{
-  background:linear-gradient(135deg,#9b5de5,#f15bb5);
+  transform: scale(1.04);
+  box-shadow:
+    0 0 18px rgba(143,47,255,.45),
+    0 0 30px rgba(123,44,191,.25);
 }
 
+/* Input fields */
 input,button{
   width:100%;
   padding:10px;
@@ -70,29 +75,35 @@ button{
   cursor:pointer;
 }
 
+/* Output cards */
 .card{
-  display:none; /* initially hidden */
-  background:#1b1f3b;
+  background:var(--box);
   padding:16px;
   border-radius:14px;
   margin-top:12px;
-  transition:.4s;
-
+  transition:.4s, opacity .6s;
   display:flex;
   flex-direction:column;
   align-items:center;
   justify-content:center;
   text-align:center;
   cursor:pointer;
+  position:relative;
+  opacity:0; /* initially hidden for fade-in */
 }
-
+.card.show{
+  opacity:1;
+}
 .card:hover{
-  background:linear-gradient(135deg,#9b5de5,#f15bb5);
+  transform:scale(1.04);
+  box-shadow:0 0 18px rgba(143,47,255,.45),0 0 30px rgba(123,44,191,.25);
 }
 
+/* Titles and values */
 .title{font-size:13px;opacity:.9}
-.value{font-size:22px;font-weight:bold;color:#4cc9f0;margin-top:6px}
+.value{font-size:22px;font-weight:bold;color:var(--pink);}
 
+/* Progress bar */
 .progress{
   width:100%;
   height:8px;
@@ -104,15 +115,18 @@ button{
 .progress span{
   display:block;
   height:100%;
-  background:#4cc9f0;
+  background:var(--pink);
 }
+
+/* Headings */
 .heading{
   text-align:center;
   font-size:16px;
   font-weight:bold;
   margin-top:20px;
   margin-bottom:10px;
-  color:#f15bb5;
+  color:var(--pink);
+  display:none; /* initially hidden */
 }
 
 /* Dark mode styles */
@@ -120,16 +134,13 @@ body.light-mode{
   background:#f0f2f5;
   color:#000;
 }
+body.light-mode .input-box,
 body.light-mode .card{
   background:#fff;
 }
-body.light-mode .input-box{
-  background:#fff;
-}
-body.light-mode input[type="date"]{
-  background:#fff;
-  color:#000;
-}
+body.light-mode .value{color:var(--pink);}
+body.light-mode .progress span{background:var(--pink);}
+body.light-mode .heading{color:var(--pink);}
 </style>
 </head>
 
@@ -138,49 +149,43 @@ body.light-mode input[type="date"]{
 <div class="app">
 <h2>Age Calculator</h2>
 
-<!-- Dark mode checkbox: Dark [checkbox] Mode -->
 <div class="dark-toggle">
   <span>Dark</span>
   <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
   <span>Mode</span>
 </div>
 
+<!-- Input card -->
 <div class="input-box">
   <label>Date of Birth</label>
   <input type="date" id="dob">
   <button onclick="start()">Calculate</button>
 </div>
 
-<!-- AGE -->
+<!-- Output Cards -->
 <div class="card" id="yearsCard"><div class="title">🎂 Years</div><div class="value" id="years">--</div></div>
 <div class="card" id="monthsCard"><div class="title">📅 Months</div><div class="value" id="months">--</div></div>
 <div class="card" id="daysCard"><div class="title">📆 Days</div><div class="value" id="days">--</div></div>
 
-<!-- TIME -->
 <div class="card" id="hoursCard"><div class="title">⏰ Hours</div><div class="value" id="hours">--</div></div>
 <div class="card" id="minutesCard"><div class="title">⏱ Minutes</div><div class="value" id="minutes">--</div></div>
 <div class="card" id="secondsCard"><div class="title">⏳ Seconds</div><div class="value" id="seconds">--</div></div>
 
-<!-- LIFE PROGRESS -->
 <div class="card" id="progressCard">
   <div class="title">📊 Life Progress</div>
   <div class="progress"><span id="bar"></span></div>
   <div class="value" id="percent">--</div>
 </div>
 
-<!-- NEXT BIRTHDAY -->
 <div class="heading">🎉 Next Birthday Countdown</div>
 <div class="card" id="bdayDaysCard"><div class="value" id="bdayDays">-- Days</div></div>
 <div class="card" id="bdayHoursCard"><div class="value" id="bdayHours">-- Hours</div></div>
 <div class="card" id="bdayMinutesCard"><div class="value" id="bdayMinutes">-- Minutes</div></div>
 <div class="card" id="bdaySecondsCard"><div class="value" id="bdaySeconds">-- Seconds</div></div>
 
-<!-- EXTRA -->
 <div class="card" id="heartCard"><div class="title">💓 Heart Beats</div><div class="value" id="heart">--</div></div>
 <div class="card" id="blinkCard"><div class="title">👀 Eyes Blinked</div><div class="value" id="blink">--</div></div>
 <div class="card" id="zodiacCard"><div class="title">🔮 Zodiac Sign</div><div class="value" id="zodiac">--</div></div>
-
-<!-- MARRIAGE EXPECTED -->
 <div class="card" id="marriageCard"><div class="title">💍 Expected Marriage Age</div><div class="value" id="marriage">--</div></div>
 
 </div>
@@ -194,11 +199,16 @@ function toggleDarkMode(){
 
 function start(){
   clearInterval(timer);
-  // Show other cards after clicking Calculate
-  const otherCards = ["yearsCard","monthsCard","daysCard","hoursCard","minutesCard","secondsCard",
-                      "progressCard","bdayDaysCard","bdayHoursCard","bdayMinutesCard","bdaySecondsCard",
-                      "heartCard","blinkCard","zodiacCard","marriageCard"];
-  otherCards.forEach(id => document.getElementById(id).style.display="flex");
+
+  // Show all cards with staggered fade-in
+  const allCards = document.querySelectorAll('.card');
+  allCards.forEach((c,i)=>{
+    c.classList.remove('show');
+    setTimeout(()=>c.classList.add('show'), i*100);
+  });
+
+  // Show headings
+  document.querySelectorAll('.heading').forEach(h => h.style.display="block");
 
   update();
   timer=setInterval(update,1000);
@@ -206,7 +216,7 @@ function start(){
 
 function update(){
   let dob=new Date(document.getElementById("dob").value);
-  if(!dob) return;
+  if(!dob.getTime()) return;
 
   let now=new Date();
   let diff=now-dob;
