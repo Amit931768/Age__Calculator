@@ -20,7 +20,7 @@ body{
   min-height:100vh;
   display:flex;
   justify-content:center;
-  transition: all .4s;
+  transition:.4s;
 }
 
 .app{
@@ -31,7 +31,6 @@ body{
 
 h2{text-align:center;margin-bottom:12px}
 
-/* Dark mode toggle */
 .dark-toggle{
   display:flex;
   justify-content:center;
@@ -39,27 +38,17 @@ h2{text-align:center;margin-bottom:12px}
   margin-bottom:15px;
   font-weight:bold;
 }
-.dark-toggle span{margin: 0 5px}
-.dark-toggle input{transform: scale(1.2);cursor:pointer}
+.dark-toggle span{margin:0 5px}
+.dark-toggle input{transform:scale(1.2);cursor:pointer}
 
-/* Input card */
 .input-box{
   background:var(--box);
   padding:15px;
   border-radius:12px;
   text-align:center;
-  cursor:pointer;
-  transition: all .3s, box-shadow .4s;
-  box-shadow:0 4px 10px rgba(0,0,0,0.5);
-}
-.input-box:hover{
-  transform: scale(1.04);
-  box-shadow:
-    0 0 18px rgba(143,47,255,.45),
-    0 0 30px rgba(123,44,191,.25);
+  box-shadow:0 4px 10px rgba(0,0,0,.5);
 }
 
-/* Input fields */
 input,button{
   width:100%;
   padding:10px;
@@ -75,35 +64,20 @@ button{
   cursor:pointer;
 }
 
-/* Output cards */
 .card{
   background:var(--box);
   padding:16px;
   border-radius:14px;
   margin-top:12px;
-  transition:.4s, opacity .6s;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
   text-align:center;
-  cursor:pointer;
-  position:relative;
-  opacity:0; /* initially hidden for fade-in */
+  opacity:0;
+  transition:.4s;
 }
-.card.show{
-  opacity:1;
-}
-.card:hover{
-  transform:scale(1.04);
-  box-shadow:0 0 18px rgba(143,47,255,.45),0 0 30px rgba(123,44,191,.25);
-}
+.card.show{opacity:1}
 
-/* Titles and values */
 .title{font-size:13px;opacity:.9}
-.value{font-size:22px;font-weight:bold;color:var(--pink);}
+.value{font-size:22px;font-weight:bold;color:var(--pink)}
 
-/* Progress bar */
 .progress{
   width:100%;
   height:8px;
@@ -118,7 +92,6 @@ button{
   background:var(--pink);
 }
 
-/* Headings */
 .heading{
   text-align:center;
   font-size:16px;
@@ -126,10 +99,9 @@ button{
   margin-top:20px;
   margin-bottom:10px;
   color:var(--pink);
-  display:none; /* initially hidden */
+  display:none;
 }
 
-/* Dark mode styles */
 body.light-mode{
   background:#f0f2f5;
   color:#000;
@@ -138,9 +110,6 @@ body.light-mode .input-box,
 body.light-mode .card{
   background:#fff;
 }
-body.light-mode .value{color:var(--pink);}
-body.light-mode .progress span{background:var(--pink);}
-body.light-mode .heading{color:var(--pink);}
 </style>
 </head>
 
@@ -151,42 +120,39 @@ body.light-mode .heading{color:var(--pink);}
 
 <div class="dark-toggle">
   <span>Dark</span>
-  <input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()">
+  <input type="checkbox" onchange="toggleDarkMode()">
   <span>Mode</span>
 </div>
 
-<!-- Input card -->
 <div class="input-box">
   <label>Date of Birth</label>
   <input type="date" id="dob">
   <button onclick="start()">Calculate</button>
 </div>
 
-<!-- Output Cards -->
 <div class="card" id="yearsCard"><div class="title">🎂 Years</div><div class="value" id="years">--</div></div>
-<div class="card" id="monthsCard"><div class="title">📅 Months</div><div class="value" id="months">--</div></div>
-<div class="card" id="daysCard"><div class="title">📆 Days</div><div class="value" id="days">--</div></div>
+<div class="card"><div class="title">📅 Months</div><div class="value" id="months">--</div></div>
+<div class="card"><div class="title">📆 Days</div><div class="value" id="days">--</div></div>
+<div class="card"><div class="title">⏰ Hours</div><div class="value" id="hours">--</div></div>
+<div class="card"><div class="title">⏱ Minutes</div><div class="value" id="minutes">--</div></div>
+<div class="card"><div class="title">⏳ Seconds</div><div class="value" id="seconds">--</div></div>
 
-<div class="card" id="hoursCard"><div class="title">⏰ Hours</div><div class="value" id="hours">--</div></div>
-<div class="card" id="minutesCard"><div class="title">⏱ Minutes</div><div class="value" id="minutes">--</div></div>
-<div class="card" id="secondsCard"><div class="title">⏳ Seconds</div><div class="value" id="seconds">--</div></div>
-
-<div class="card" id="progressCard">
+<div class="card">
   <div class="title">📊 Life Progress</div>
   <div class="progress"><span id="bar"></span></div>
   <div class="value" id="percent">--</div>
 </div>
 
 <div class="heading">🎉 Next Birthday Countdown</div>
-<div class="card" id="bdayDaysCard"><div class="value" id="bdayDays">-- Days</div></div>
-<div class="card" id="bdayHoursCard"><div class="value" id="bdayHours">-- Hours</div></div>
-<div class="card" id="bdayMinutesCard"><div class="value" id="bdayMinutes">-- Minutes</div></div>
-<div class="card" id="bdaySecondsCard"><div class="value" id="bdaySeconds">-- Seconds</div></div>
+<div class="card"><div class="value" id="bdayDays">-- Days</div></div>
+<div class="card"><div class="value" id="bdayHours">-- Hours</div></div>
+<div class="card"><div class="value" id="bdayMinutes">-- Minutes</div></div>
+<div class="card"><div class="value" id="bdaySeconds">-- Seconds</div></div>
 
-<div class="card" id="heartCard"><div class="title">💓 Heart Beats</div><div class="value" id="heart">--</div></div>
-<div class="card" id="blinkCard"><div class="title">👀 Eyes Blinked</div><div class="value" id="blink">--</div></div>
-<div class="card" id="zodiacCard"><div class="title">🔮 Zodiac Sign</div><div class="value" id="zodiac">--</div></div>
-<div class="card" id="marriageCard"><div class="title">💍 Expected Marriage Age</div><div class="value" id="marriage">--</div></div>
+<div class="card"><div class="title">💓 Heart Beats</div><div class="value" id="heart">--</div></div>
+<div class="card"><div class="title">👀 Eyes Blinked</div><div class="value" id="blink">--</div></div>
+<div class="card"><div class="title">🔮 Zodiac Sign</div><div class="value" id="zodiac">--</div></div>
+<div class="card"><div class="title">💍 Expected Marriage Age</div><div class="value" id="marriage">--</div></div>
 
 </div>
 
@@ -194,67 +160,89 @@ body.light-mode .heading{color:var(--pink);}
 let timer;
 
 function toggleDarkMode(){
-  document.body.classList.toggle('light-mode');
+  document.body.classList.toggle("light-mode");
 }
 
 function start(){
   clearInterval(timer);
 
-  // Show all cards with staggered fade-in
-  const allCards = document.querySelectorAll('.card');
-  allCards.forEach((c,i)=>{
-    c.classList.remove('show');
-    setTimeout(()=>c.classList.add('show'), i*100);
+  document.querySelectorAll(".card").forEach((c,i)=>{
+    c.classList.remove("show");
+    setTimeout(()=>c.classList.add("show"),i*80);
   });
 
-  // Show headings
-  document.querySelectorAll('.heading').forEach(h => h.style.display="block");
+  document.querySelectorAll(".heading").forEach(h=>h.style.display="block");
 
   update();
   timer=setInterval(update,1000);
 }
 
 function update(){
-  let dob=new Date(document.getElementById("dob").value);
-  if(!dob.getTime()) return;
+  const dobInput=document.getElementById("dob").value;
+  if(!dobInput) return;
 
-  let now=new Date();
+  const dob=new Date(dobInput);
+  const now=new Date();
+
+  // ✅ CORRECT AGE LOGIC
+  let yearsCount=now.getFullYear()-dob.getFullYear();
+  let monthsCount=now.getMonth()-dob.getMonth();
+  let daysCount=now.getDate()-dob.getDate();
+
+  if(daysCount<0){
+    monthsCount--;
+    let prevMonth=new Date(now.getFullYear(),now.getMonth(),0);
+    daysCount+=prevMonth.getDate();
+  }
+
+  if(monthsCount<0){
+    yearsCount--;
+    monthsCount+=12;
+  }
+
+  years.innerText=yearsCount;
+  months.innerText=monthsCount;
+  days.innerText=daysCount;
+
+  // ⏱ Time lived
   let diff=now-dob;
-
   let sec=Math.floor(diff/1000);
   let min=Math.floor(sec/60);
   let hr=Math.floor(min/60);
-  let day=Math.floor(hr/24);
-  let year=Math.floor(day/365);
-  let month=Math.floor((day%365)/30);
-  let remDays=(day%365)%30;
-
-  years.innerText=year;
-  months.innerText=month;
-  days.innerText=remDays;
 
   hours.innerText=hr.toLocaleString();
   minutes.innerText=min.toLocaleString();
   seconds.innerText=sec.toLocaleString();
 
-  let life=(year/80*100).toFixed(1);
+  // 📊 Life progress
+  let life=(yearsCount/80*100).toFixed(1);
   percent.innerText=life+" % Completed";
   bar.style.width=life+"%";
 
+  // 🎂 Next Birthday
   let next=new Date(now.getFullYear(),dob.getMonth(),dob.getDate());
   if(next<now) next.setFullYear(next.getFullYear()+1);
   let bd=next-now;
 
-  bdayDays.innerText=Math.floor(bd/(1000*60*60*24))+" Days";
-  bdayHours.innerText=Math.floor(bd/(1000*60*60))+" Hours";
-  bdayMinutes.innerText=Math.floor(bd/(1000*60))+" Minutes";
+  bdayDays.innerText=Math.floor(bd/86400000)+" Days";
+  bdayHours.innerText=Math.floor(bd/3600000)+" Hours";
+  bdayMinutes.innerText=Math.floor(bd/60000)+" Minutes";
   bdaySeconds.innerText=Math.floor(bd/1000)+" Seconds";
 
   heart.innerText=(hr*60*70).toLocaleString();
   blink.innerText=(min*15).toLocaleString();
   zodiac.innerText=getZodiac(dob.getDate(),dob.getMonth()+1);
+  marriage.innerText=(yearsCount+3)+" Years (Estimated)";
 
-  marriage.innerText=(year+3)+" Years (Estimated)";
+  // 🎉 HAPPY BIRTHDAY ALERT (ONCE)
+  if(
+    now.getDate()===dob.getDate() &&
+    now.getMonth()===dob.getMonth() &&
+    !window.bdayShown
+  ){
+    window.bdayShown=true;
+    alert("🎉 Happy Birthday! 🎂");
+  }
 }
 
 function getZodiac(d,m){
